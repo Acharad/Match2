@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.minject": {
+      "version": "https://github.com/Acharad/MInject.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "8b7baf3f4357a34cf0bd408e2a9dd162b50ba69a"
+    },
     "com.unity.2d.animation": {
       "version": "10.1.4",
       "depth": 1,
