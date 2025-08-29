@@ -9,7 +9,8 @@ namespace Game.Core.Item
     {
         [SerializeField] private SpriteRenderer SpriteRenderer;
         [SerializeField] protected ItemFallComponent itemFallComponent;
-        public ItemShufflerComponent ItemShufflerComponent;
+        
+        protected readonly Dictionary<Type, IItemComponent> ItemComponents = new();
         
         protected ItemData _itemData;
         protected ItemUIData _itemUIData;
@@ -90,6 +91,17 @@ namespace Game.Core.Item
         public ItemFallComponent GetFallComponent()
         {
             return itemFallComponent;
+        }
+        
+        protected void AddComponent<TInterface>(IItemComponent comp) where TInterface : IItemComponent
+        {
+            ItemComponents[typeof(TInterface)] = comp;
+        }
+
+        
+        public T GetItemComponent<T>() where T : class, IItemComponent
+        {
+            return ItemComponents.TryGetValue(typeof(T), out var comp) ? comp as T : null;
         }
         
         protected void DestroyItem()

@@ -1,6 +1,6 @@
 namespace Game.Items.Components
 {
-    public class ItemShufflerComponent
+    public class ItemShufflerComponent : IItemShuffleComponent
     {
         public virtual bool CanShuffle()
         {

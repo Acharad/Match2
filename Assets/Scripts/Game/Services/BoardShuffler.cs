@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Game.Core.Board;
 using Game.Core.Item;
 using Game.Core;
+using Game.Items.Components;
 using Game.Services.Lock;
 using Game.Services.StaticExtensions;
 using UnityEngine;
@@ -48,7 +49,7 @@ namespace Game.Services
                 for (var x = 0; x < _board.Cols; x++)
                 {
                     if (!_board.Cells[x, y].HasItem()) continue;
-                    if (!_board.Cells[x, y].ItemBase.ItemShufflerComponent.CanShuffle()) continue;
+                    if (!_board.Cells[x, y].ItemBase.GetItemComponent<IItemShuffleComponent>().CanShuffle()) continue;
                     cellList.Add(_board.Cells[x, y]);
                     AddToCubeDictionary(cubeDictionary, _board.Cells[x, y].ItemBase);
                 }
@@ -141,7 +142,7 @@ namespace Game.Services
                 {
                     if (!cell.Neighbours.TryGetValue(direction, out var neighbour)) continue;
                     
-                    if (neighbour.ItemBase.ItemShufflerComponent.CanShuffle())
+                    if (neighbour.ItemBase.GetItemComponent<IItemShuffleComponent>().CanShuffle())
                     {
                         return new Tuple<Cell, Cell>(cell, neighbour);
                     }

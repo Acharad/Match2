@@ -15,7 +15,7 @@ namespace Game.Items
             CanTapped = true;
             
             itemFallComponent.SetItem(this);
-            ItemShufflerComponent = new CanShuffleItemComponent();
+            AddComponent<IItemShuffleComponent>(new CanShuffleItemComponent());
         }
 
         private void VisualizeHint(int value, List<int> hintThresholds)
