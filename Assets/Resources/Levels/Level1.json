@@ -9,7 +9,7 @@
     { "ItemType": 1, "Color": 1, "LayerCount": 1 },
     { "ItemType": 1, "Color": 2, "LayerCount": 1 },
     { "ItemType": 1, "Color": 3, "LayerCount": 1 },
-    { "ItemType": 1, "Color": 4, "LayerCount": 1 },
+    { "ItemType": 3, "Color": 0, "LayerCount": 1 },
     { "ItemType": 1, "Color": 1, "LayerCount": 1 },
 
     { "ItemType": 1, "Color": 1, "LayerCount": 1 },
@@ -18,7 +18,7 @@
     { "ItemType": 1, "Color": 1, "LayerCount": 1 },
     { "ItemType": 1, "Color": 2, "LayerCount": 1 },
     { "ItemType": 1, "Color": 3, "LayerCount": 1 },
-    { "ItemType": 1, "Color": 4, "LayerCount": 1 },
+    { "ItemType": 3, "Color": 0, "LayerCount": 1 },
     { "ItemType": 1, "Color": 1, "LayerCount": 2 },
     { "ItemType": 1, "Color": 2, "LayerCount": 1 },
 

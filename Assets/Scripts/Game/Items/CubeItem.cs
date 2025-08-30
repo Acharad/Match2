@@ -13,7 +13,10 @@ namespace Game.Items
             ChangeSprite(_itemData.LayerCount - 1);
 
             CanTapped = true;
-            
+        }
+
+        public override void InitComponents()
+        {
             itemFallComponent.SetItem(this);
             AddComponent<IItemShuffleComponent>(new CanShuffleItemComponent());
         }

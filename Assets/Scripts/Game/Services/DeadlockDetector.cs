@@ -67,7 +67,7 @@ namespace Game.Services
                     {
                         var group = _matchFinder.GetMatchedCells(
                             _board.Cells[i, j],
-                            _board.Cells[i, j].ItemBase.GetItemColor()
+                            _board.Cells[i, j].ItemBase.GetMatchType()
                         );
                         
                         if (group.Count >= _minMatchCount)

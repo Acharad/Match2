@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Items;
 
 namespace Game.Services
 {
@@ -10,6 +11,7 @@ namespace Game.Services
         public void Init(MatchFinder matchFinder, int minMatchCount)
         {
             _matchFinder = matchFinder;
+            
             _minMatchCount = minMatchCount;
         }
         
@@ -19,15 +21,17 @@ namespace Game.Services
 
             if (!cell.HasItem() || !cell.ItemBase.CanExplodeWithTab) return;
 
-
-            HitMatchingCells(cell);
+            if (cell.ItemBase is BoosterItem)
+                HitSpecialMatchingCells(cell);
+            else
+                HitMatchingCells(cell);
         }
         
         private void HitMatchingCells(Cell cell)
         {
-            var color = cell.ItemBase.GetItemColor();
+            var matchType = cell.ItemBase.GetMatchType();
 
-            var hitGroup = _matchFinder.GetMatchedCells(cell, color);
+            var hitGroup = _matchFinder.GetMatchedCells(cell, matchType);
             
             if (hitGroup.Count < _minMatchCount) return;
             
@@ -37,6 +41,18 @@ namespace Game.Services
             }
 
             HitNeighboursOfCellGroup(hitGroup);
+        }
+
+        private void HitSpecialMatchingCells(Cell cell)
+        {
+            var matchType = cell.ItemBase.GetMatchType();
+
+            var hitGroup = _matchFinder.GetMatchedCells(cell, matchType);
+            
+            if (hitGroup.Count < 2)
+            {
+                cell.ItemBase.TryExecute();
+            }
         }
 
         private void HitNeighboursOfCellGroup(HashSet<Cell> hitGroup)

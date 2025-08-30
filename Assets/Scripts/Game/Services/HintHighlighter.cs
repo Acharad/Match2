@@ -43,7 +43,7 @@ namespace Game.Services
                     if (!_visitedCells[i, j] && _board.Cells[i, j].HasItem())
                     {
                         var group = _matchFinder.GetMatchedCells(_board.Cells[i, j],
-                            _board.Cells[i, j].ItemBase.GetItemColor());
+                            _board.Cells[i, j].ItemBase.GetMatchType());
 
                         ShowGroupHint(group);
                         MarkVisited(group);

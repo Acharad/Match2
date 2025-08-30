@@ -71,8 +71,7 @@ namespace Game.Core.Board
                     var item = itemFactory.CreateItem(itemData, ItemsParent);
                     if (item == null) continue;					
 					 					
-                    cell.ItemBase = item;
-                    item.transform.position = cell.transform.position;
+                    item.SetUp(cell, cell.transform.position);
                 }
             }
         }

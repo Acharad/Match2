@@ -22,6 +22,8 @@ namespace Game.Core.Item
 
         public bool CanExplodeWithTab => CanTapped && !itemFallComponent.IsFalling;
         public bool IsAvailableForMatch => !itemFallComponent.IsFalling;
+
+        protected bool _isStartDestroying = false;
         
         public event Action<ItemBase> OnItemDestroyed;
         
@@ -55,6 +57,16 @@ namespace Game.Core.Item
             _itemData = itemData;
             _itemUIData = uiData;
         }
+
+        public void SetUp(Cell cell, Vector2 pos)
+        {
+            Cell = cell;
+            transform.position  = pos;
+            InitComponents();
+        }
+        
+        public virtual void InitComponents(){}
+        
         
         protected void ChangeSprite(int index)
         {
@@ -67,10 +79,10 @@ namespace Game.Core.Item
             
             SpriteRenderer.sprite = _itemUIData.ItemSprites[index];
         }
-
-        public virtual ItemColor GetItemColor()
+        
+        public virtual MatchType GetMatchType()
         {
-            return _itemData.Color;
+            return _itemData.Color.ToMatchType();
         }
         
         public void TryFall()
@@ -99,13 +111,15 @@ namespace Game.Core.Item
         }
 
         
-        public T GetItemComponent<T>() where T : class, IItemComponent
+        public T TryGetItemComponent<T>() where T : class, IItemComponent
         {
             return ItemComponents.TryGetValue(typeof(T), out var comp) ? comp as T : null;
         }
         
         protected void DestroyItem()
         {
+            if (_isStartDestroying) return;
+            _isStartDestroying = false;
             Cell.ItemBase = null;
             Cell = null;
             

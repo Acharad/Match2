@@ -5,5 +5,6 @@ namespace Game.Core.Item
         None = 0,
         Cube = 1,
         Box = 2,
+        Bomb = 3,
     }
 }

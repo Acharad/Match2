@@ -51,10 +51,10 @@ namespace Game.Services
             for (var i = 0; i < _generatorCells.Count; i++)
             {
                 var cell = _generatorCells[i];
-                if (cell.ItemBase != null) continue;
+                if (cell.HasItem()) continue;
                 
                 var getRandomItemData = _generatorData[Random.Range(0, _generatorData.Length)];
-                cell.ItemBase = _itemFactory.CreateItem(getRandomItemData, _itemsParent);
+                var itemBase = _itemFactory.CreateItem(getRandomItemData, _itemsParent);
 
                 var offsetY = 0.0F;
                 var targetCellBelow = cell.GetBottomAvailableCell().CellBelow;
@@ -70,8 +70,7 @@ namespace Game.Services
                 p.y += cell.CellOffset * 2; // 2 * 0.85 
                 p.y = p.y > offsetY ? p.y : offsetY;
 
-                if (!cell.HasItem()) continue;
-                cell.ItemBase.transform.position = p;
+                itemBase.SetUp(cell, p);
                 cell.ItemBase.TryFall();
             }
         }

@@ -42,14 +42,20 @@ namespace Game.Services
             _shuffleStarted = true;
             
             var cellList = new List<Cell>();
-            var cubeDictionary = new Dictionary<ItemColor, List<ItemBase>>();
+            var cubeDictionary = new Dictionary<MatchType, List<ItemBase>>();
 
             for (var y = 0; y < _board.Rows; y++)
             {
                 for (var x = 0; x < _board.Cols; x++)
                 {
                     if (!_board.Cells[x, y].HasItem()) continue;
-                    if (!_board.Cells[x, y].ItemBase.GetItemComponent<IItemShuffleComponent>().CanShuffle()) continue;
+                    var shuffleComp = _board.Cells[x, y].ItemBase.TryGetItemComponent<IItemShuffleComponent>();
+                    if (shuffleComp == null)
+                    {
+                        Debug.LogError("Some item has no shuffle component");
+                        return;
+                    }
+                    if (!shuffleComp.CanShuffle()) continue;
                     cellList.Add(_board.Cells[x, y]);
                     AddToCubeDictionary(cubeDictionary, _board.Cells[x, y].ItemBase);
                 }
@@ -65,12 +71,12 @@ namespace Game.Services
                 return;
             }
 
-            var colorsForPossibleMatches = new List<ItemColor>();
+            var colorsForPossibleMatches = new List<MatchType>();
 
-            foreach (var itemColor in cubeDictionary.Keys)
+            foreach (var matchType in cubeDictionary.Keys)
             {
-                if(cubeDictionary[itemColor].Count >= _minMatchCount)
-                    colorsForPossibleMatches.Add(itemColor);
+                if(cubeDictionary[matchType].Count >= _minMatchCount)
+                    colorsForPossibleMatches.Add(matchType);
             }
 
             if (colorsForPossibleMatches.Count == 0)
@@ -85,8 +91,8 @@ namespace Game.Services
             _shuffleStarted = false;
         }
 
-        private void AnimateShuffle(List<Cell> cellList, Dictionary<ItemColor, List<ItemBase>> cubeDictionary, 
-                                    List<ItemColor> colorsForPossibleMatches, Tuple<Cell,Cell> possibleMatchCellTuple)
+        private void AnimateShuffle(List<Cell> cellList, Dictionary<MatchType, List<ItemBase>> cubeDictionary, 
+                                    List<MatchType> colorsForPossibleMatches, Tuple<Cell,Cell> possibleMatchCellTuple)
         {
             var randomPossibleMatchColor =
                 colorsForPossibleMatches[Random.Range(0, colorsForPossibleMatches.Count)];
@@ -119,15 +125,15 @@ namespace Game.Services
         }
 
 
-        private void AddToCubeDictionary(Dictionary<ItemColor, List<ItemBase>> dictionary, ItemBase itemBase)
+        private void AddToCubeDictionary(Dictionary<MatchType, List<ItemBase>> dictionary, ItemBase itemBase)
         {
-            if (dictionary.ContainsKey(itemBase.GetItemColor()))
+            if (dictionary.ContainsKey(itemBase.GetMatchType()))
             {
-                dictionary[itemBase.GetItemColor()].Add(itemBase);
+                dictionary[itemBase.GetMatchType()].Add(itemBase);
             }
             else
             {
-                dictionary.Add(itemBase.GetItemColor(), new List<ItemBase> { itemBase });
+                dictionary.Add(itemBase.GetMatchType(), new List<ItemBase> { itemBase });
             }
         }
         
@@ -142,7 +148,7 @@ namespace Game.Services
                 {
                     if (!cell.Neighbours.TryGetValue(direction, out var neighbour)) continue;
                     
-                    if (neighbour.ItemBase.GetItemComponent<IItemShuffleComponent>().CanShuffle())
+                    if (neighbour.ItemBase.TryGetItemComponent<IItemShuffleComponent>().CanShuffle())
                     {
                         return new Tuple<Cell, Cell>(cell, neighbour);
                     }

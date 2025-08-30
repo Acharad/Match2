@@ -1,4 +1,3 @@
-using System;
 using Game.Core.Board;
 using Game.Core.Data;
 using Game.Core.Item;
@@ -6,7 +5,6 @@ using Game.Core.Level;
 using Services.Input;
 using UnityEngine;
 using Game.Services;
-using Game.Services.Lock;
 using Game.Services.Pool;
 
 namespace Game.Managers
@@ -16,7 +14,7 @@ namespace Game.Managers
         [SerializeField] private int levelIndex = 1;
         [SerializeField] private Board Board;
         [SerializeField] private InputListener InputListener;
-        
+
         private LevelData _levelData;
         private ItemFactory _itemFactory;
         private GameData _gameData;
@@ -30,7 +28,7 @@ namespace Game.Managers
         private readonly BoardStabilityMonitor _boardStabilityMonitor = new();
         private readonly ItemPoolCreator _itemPoolCreator = new();
         private readonly BoardShuffler _boardShuffler = new();
-        
+
         private void Start()
         {
             LoadGameData();
@@ -66,7 +64,7 @@ namespace Game.Managers
             _deadlockDetector.Init(Board, _matchFinder, _boardStabilityMonitor, _gameData.MinMatchCount);
             _gravityHandler.Init(Board);
             _boardSpawner.Init(Board, _itemFactory, _levelData.GeneratorData);
-            _boardShuffler.Init(Board,_deadlockDetector, _gameData.MinMatchCount);
+            _boardShuffler.Init(Board, _deadlockDetector, _gameData.MinMatchCount);
         }
 
         private void InitializeInput()

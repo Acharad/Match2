@@ -15,6 +15,11 @@ public class Cell : MonoBehaviour
     public Cell CellBelow;
     public bool IsGeneratorCell;
     
+    //todo imran remove ig its not seams cool
+    public Board Board { get; private set; }
+
+    public CellLockCounter CellLockCounter;
+    
     private ItemBase _itemBase;
     public ItemBase ItemBase
     {
@@ -55,6 +60,7 @@ public class Cell : MonoBehaviour
             y * CellOffset - offsetY,
             0f
         );
+        Board = board;
         SetNeighbours(board);
     }
     

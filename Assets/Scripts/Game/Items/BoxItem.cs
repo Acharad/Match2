@@ -12,9 +12,14 @@ namespace Game.Items
             ChangeSprite(_itemData.LayerCount - 1);
             CanFall = false;
             
+            
+        }
+
+        public override void InitComponents()
+        {
             AddComponent<IItemShuffleComponent>(new NonShuffleItemComponent());
         }
-        
+
         public override void TryExecute()
         {
             _itemData.LayerCount--;
